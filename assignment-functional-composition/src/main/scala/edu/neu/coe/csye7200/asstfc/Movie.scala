@@ -136,7 +136,7 @@ object Movie extends App {
 
   def getMoviesFromCountry(country: String, movies: Iterator[Try[Movie]]): Try[Seq[Movie]] = {
     val mys = for (my <- movies.toSeq) yield
-      for (m <- my; if m.production.country == country) yield m
+      for (m @ Movie(_, Production(`country`, _, _, _), _, _, _, _, _, _, _, _, _) <- my) yield m
     Function.sequence(for (my <- mys; if my.isSuccess) yield my)
   }
 
