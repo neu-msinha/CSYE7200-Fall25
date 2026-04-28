@@ -228,7 +228,7 @@ class MonadOpsSpec extends flatspec.AnyFlatSpec with should.Matchers with Future
     }
   // NOTE: this test works except when run by sbt
     ignore should "work for 1, goodURL, 1/0 (less patient)" taggedAs Slow in {
-        whenReady(sequenceImpatient(Seq(Future(1), WebCrawler.getURLContent(new URL(goodURL)), Future(1 / 0)))(0.5)) {
+        whenReady(sequenceImpatient(Seq(Future(1), WebCrawler.fetchURLContent(new URL(goodURL)), Future(1 / 0)))(0.5)) {
           xys =>
             xys.length shouldBe 3
             xys.head shouldBe Success(1)
@@ -238,7 +238,7 @@ class MonadOpsSpec extends flatspec.AnyFlatSpec with should.Matchers with Future
     }
   // NOTE: this test works except when run by sbt
     ignore should "work for 1, goodURL, 1/0 (more patient)" taggedAs Slow in {
-        whenReady(sequenceImpatient(Seq(Future(1), WebCrawler.getURLContent(new URL(goodURL)), Future(1 / 0)))(200)) {
+        whenReady(sequenceImpatient(Seq(Future(1), WebCrawler.fetchURLContent(new URL(goodURL)), Future(1 / 0)))(200)) {
             xys =>
                 xys.length shouldBe 3
                 xys.head shouldBe Success(1)

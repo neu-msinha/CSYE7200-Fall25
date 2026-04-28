@@ -126,9 +126,10 @@ object WebCrawler {
     // Hint: write as a for-comprehension, using fetchURLContent (above) and getLinks (below).
     // You will also need FP.asFuture
     // 9 points.
-    // TO BE IMPLEMENTED 
-    ???
-  // END SOLUTION
+    for {
+      content <- fetchURLContent(url)
+      links <- asFuture(getLinks(content, url))
+    } yield links
 
   /**
    * Extracts and validates a list of URLs from the given HTML content string and a base URL.
@@ -158,9 +159,14 @@ object WebCrawler {
    * @return a sequence of `Try[URL]` objects, representing the valid URLs extracted and resolved from the node.
    */
   def getURLs(node: Node, url: URL): Seq[Try[URL]] =
-// TO BE IMPLEMENTED 
-    ???
-// END SOLUTION
+    // Use node \\ "a" to get all anchor elements
+    // Use \ "@href" to get the href attribute
+    for {
+      anchor <- (node \\ "a").toSeq
+      hrefNode <- anchor \ "@href"
+      href = hrefNode.text
+      if isValidURLString(href)
+    } yield createRelURL(Some(url), href).flatMap(validateURL)
 
   /**
    * Converts the content of a given BufferedSource to a String.
