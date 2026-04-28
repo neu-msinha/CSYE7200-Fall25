@@ -128,10 +128,12 @@ object Movie {
      * @return a Try[Movie]
      */
     def parse(w: String): Try[Movie] = {
-      // TO BE IMPLEMENTED 
-      Try(???)
-      // END
+      Try {
+        val fields = w.split(",").map(_.trim)
+        Movie(fields)
+      }
     }
+
   }
 
   // Expose a pure method that processes a file and returns the count of Kiwi movies.
@@ -158,12 +160,7 @@ object Movie {
     * @return a list of Strings containing the specified elements in order
     */
   def elements(list: Seq[String], indices: Int*): List[String] = {
-    // Hint: form a new list which is consisted by the elements in list in position indices. Int* means array of Int.
-    // 6 points
-    val result: Seq[String] = {
-      // TO BE IMPLEMENTED 
-            ???
-    }
+    val result: Seq[String] = indices.map(list(_))
     result.toList
   }
 
@@ -332,8 +329,12 @@ object Rating {
   def apply(s: String): Rating = s match {
     case rRating("Unrated" | "Approved" | "Not Rated" | "" | "NULL" | null, _, _) =>
       throw ParseException(s"parse error in Rating: $s")
-    // TO BE IMPLEMENTED 
-        ???
+    // TO BE IMPLEMENTED
+    case rRating(code, _, age) if age != null =>
+      Rating(code, Some(age.toInt))
+    case rRating(code, _, _) =>
+      Rating(code, None)
+    // END
     case _ => throw ParseException(s"parse error in Rating: $s")
   }
 }
